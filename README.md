@@ -1,2 +1,9 @@
 # Orange
-I'm working on developing an interpreter and compiler for my own programming language in Python and C++ two separate languages. My goal is to enhance the language and make it more robust.
+Currently we have done with parsing and generating AST for interpreter
+Still some need to include sopport some operators
+
+### Our CFG grammar looks like this currently ###
+>term -> factor(("+" || "-")factor)*  
+> factor -> unary(("*" || "/")unary)*  
+> unary -> ("!" || "-")*unary || primary  
+> primary -> NUMBER || STRING || IDENTIFIERS

@@ -1,4 +1,6 @@
 import sys
+
+from interpreter import Interpreter
 from lexer import Lexer
 from parser import Parser
 def runFile(file_path):
@@ -8,6 +10,8 @@ def runFile(file_path):
         lexer.scan()
         parser = Parser(lexer.tokens)
         parser.parse()
+        interpreter = Interpreter()
+        interpreter.interpret(parser.statement)
 
 if __name__ == '__main__':
     debug_mode =  True

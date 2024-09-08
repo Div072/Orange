@@ -26,7 +26,7 @@ class Binary(Expr):
 class Unary(Expr):
     def __init__(self,token:Token,right:Expr):
         self.operand = token.type
-        self.rigt = right
+        self.right = right
     def accept(self,visitor:Visitor):
         return visitor.visitUnaryExpr(self)
 

@@ -1,6 +1,6 @@
 from token_ import Tokentype
 from token_ import Token
-
+#TODO properly assing tokens
 class Lexer:
 
     def __init__(self,source):
@@ -84,6 +84,7 @@ class Lexer:
                 return
             case _:
                 flag = False
+                start = self.curr
                 if self.Isalphanumeric(ch):
                     self.curr = self.curr-1
                     while self.Isalphanumeric(self.peek()):
@@ -93,7 +94,7 @@ class Lexer:
                             flag = False
                         self.advance()
                     if flag == True:
-                        self.tokens.append(Token.addToken(Tokentype.NUMBER,"Number",self.line))
+                        self.tokens.append(Token.addToken(Tokentype.NUMBER,self.source[start-1:self.curr],self.line))
                         return
                     else:
 

@@ -1,7 +1,7 @@
 from lexer import Lexer
 from Expr import *
 from token_ import *
-
+# I'm using Visitor Pattern to keep this code clean
 class Parser:
     def __init__(self,tokens:[]):
         self.tokens = tokens
@@ -18,17 +18,17 @@ class Parser:
         while self.peek().type == Tokentype.PLUS or self.peek().type == Tokentype.MINUS:
             self.advance()
             operator = self.peek_previous()
-            print("plus")
+
             right = self.factor() #change it after creating calss to unary
             left = Binary(left,operator,right)
         return left
-            # TODO implement class for binary
+
     def factor(self):
         left = self.unary()
         while self.peek().type == Tokentype.MULTIPLY or self.peek().type==Tokentype.DIVIDE:
             self.advance()
             operator = self.peek_previous()
-            print("multiply")
+
             right = self.unary()
             left = Binary(left,operator,right)
         return left
@@ -36,7 +36,7 @@ class Parser:
         if self.peek().type == Tokentype.BANG or self.peek().type == Tokentype.MINUS:
             self.advance()
             operator = self.peek_previous()
-            print("Unary")
+
             right = self.unary()
             return Unary(operator,right)
 
@@ -47,7 +47,7 @@ class Parser:
 
         if self.peek().type == Tokentype.NUMBER:
             self.advance()
-            print("number")
+
             return Literal(token.lexeme)
         if token.type == Tokentype.STRING:
             return Literal(token.lexeme)

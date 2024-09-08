@@ -45,5 +45,7 @@ class Literal(Expr):
         self.value = value
     def accept(self,visitor:Visitor):
         return visitor.visitLiteralExpr(self)
+class Variable(Expr):
+    pass
 
 

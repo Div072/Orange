@@ -22,7 +22,8 @@ class Tokentype(Enum):
     WHILE = auto()
     FOR = auto()
     FUN = auto()
-
+    OPENBRA = auto()
+    CLOSEBRA =  auto()
     EOF = auto()
 
 

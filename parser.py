@@ -11,19 +11,36 @@ class Parser:
 
     def parse(self):
         while self.peek().type != Tokentype.EOF and self.curr< len(self.tokens):
-            self.statement.append(self.term())
+            self.statement.append(self.equality())
+    def equality(self):
+        left = self.comparision()
+        while self.peek().type == Tokentype.BANG_EQUAL or self.peek().type == Tokentype.EQUAL_EQUAL:
+            self.advance()
+            operand = self.peek_previous()
+            right = self.comparision()
+            left = Binary(left,operand,right)
+        return left
+    def comparision(self):
+        left = self.term()
+        while self.peek().type == Tokentype.GREATER_EQUAL or self.peek().type == Tokentype.GREATER_EQUAL or self.peek().type == Tokentype.LESS_EQUAL or self.peek().type == Tokentype.LESS:
+            self.advance()
+            operand = self.peek_previous()
+            right = self.term()
+            left = Binary(left,operand,right)
+        return left
 
     def term(self):
-        left =  self.factor() #change it after to unary
+        left =  self.factor()
         while self.peek().type == Tokentype.PLUS or self.peek().type == Tokentype.MINUS:
             self.advance()
             operator = self.peek_previous()
 
-            right = self.factor() #change it after creating calss to unary
+            right = self.factor()
             left = Binary(left,operator,right)
         return left
 
     def factor(self):
+        print(self.curr)
         left = self.unary()
         while self.peek().type == Tokentype.MULTIPLY or self.peek().type==Tokentype.DIVIDE:
             self.advance()
@@ -44,15 +61,21 @@ class Parser:
             return self.primary()
     def primary(self):
         token = self.peek()
-
         if self.peek().type == Tokentype.NUMBER:
             self.advance()
-
             return Literal(token.lexeme)
         if token.type == Tokentype.STRING:
+            self.advance()
             return Literal(token.lexeme)
-        if token.type == Tokentype.EOF:
-            return
+
+        if token.type == Tokentype.OPENBRA:
+            self.advance()
+            expr = self.equality()
+            if self.peek().type != Tokentype.CLOSEBRA:
+                print("missing close ) token")
+                exit()
+            self.advance() #consume )
+            return Grouping(expr)
         print("Unexpected token",token.type)
         exit()
 

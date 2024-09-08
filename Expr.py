@@ -11,6 +11,9 @@ class Visitor(ABC):
     @abstractmethod
     def visitUnaryExpr(self,expr: Unary)->None:
         pass
+    @abstractmethod
+    def visitGroupingExpr(self,expr:Grouping)->None:
+        pass
 
 class Expr(ABC):
     def accept(self,visitor:Visitor)-> None:
@@ -23,6 +26,7 @@ class Binary(Expr):
         self.right = right
     def accept(self,visitor:Visitor):
         return visitor.visitBinnaryExpr(self)
+
 class Unary(Expr):
     def __init__(self,token:Token,right:Expr):
         self.operand = token.type
@@ -30,9 +34,16 @@ class Unary(Expr):
     def accept(self,visitor:Visitor):
         return visitor.visitUnaryExpr(self)
 
+class Grouping(Expr):
+    def __init__(self,expression:Expr):
+        self.expression = expression
+    def accept(self,visitor:Visitor):
+        return visitor.visitGroupingExpr(self)
+
 class Literal(Expr):
     def __init__(self, value):
         self.value = value
     def accept(self,visitor:Visitor):
         return visitor.visitLiteralExpr(self)
+
 

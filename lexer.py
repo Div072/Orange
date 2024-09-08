@@ -21,6 +21,12 @@ class Lexer:
         self.advance()
 
         match ch:
+            case '(':
+                self.tokens.append(Token.addToken(Tokentype.OPENBRA,"Openbra",self.line))
+                return
+            case ')':
+                self.tokens.append(Token.addToken(Tokentype.CLOSEBRA, "closebra", self.line))
+                return
             case ';':
                 self.tokens.append(Token.addToken(Tokentype.SEMICOLON,"Semicolon",self.line))
                 return

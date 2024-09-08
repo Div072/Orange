@@ -22,6 +22,14 @@ class Interpreter(Visitor):
                 return int( left) * int( right)
             case Tokentype.DIVIDE:
                 return int( left) / int(right)
+            case Tokentype.LESS:
+                return int(left)<int(right)
+            case Tokentype.GREATER:
+                return int(left)>int(right)
+            case Tokentype.LESS_EQUAL:
+                return int(left)<=int(right)
+            case Tokentype.GREATER_EQUAL:
+                return int(left)>=int(right)
             case _:
                 print("for binary expression got invalid operator")
                 exit()
@@ -34,6 +42,11 @@ class Interpreter(Visitor):
                 return -int(right)
             case Tokentype.BANG:
                 return not right
+            case _:
+                print("for unary expression got invalid operator")
+                exit()
+    def visitGroupingExpr(self,expr:Grouping):
+        return self.eval(expr.expression)
 
     def interpret(self,statements:[]):
         for statement in statements:

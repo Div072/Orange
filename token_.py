@@ -24,6 +24,8 @@ class Tokentype(Enum):
     FUN = auto()
     OPENBRA = auto()
     CLOSEBRA =  auto()
+    TRUE = auto()
+    FALSE = auto()
     EOF = auto()
 
 
@@ -32,6 +34,7 @@ class Token:
         self.type = tokentype
         self.lexeme = lexeme
         self.line = line
+
 
 
     def addToken(tokentype, lexeme, line):

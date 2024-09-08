@@ -40,7 +40,6 @@ class Parser:
         return left
 
     def factor(self):
-        print(self.curr)
         left = self.unary()
         while self.peek().type == Tokentype.MULTIPLY or self.peek().type==Tokentype.DIVIDE:
             self.advance()
@@ -67,7 +66,12 @@ class Parser:
         if token.type == Tokentype.STRING:
             self.advance()
             return Literal(token.lexeme)
-
+        if token.type == Tokentype.FALSE:
+            self.advance()
+            return Literal(token.lexeme)
+        if token.type == Tokentype.TRUE:
+            self.advance()
+            return Literal(token.lexeme)
         if token.type == Tokentype.OPENBRA:
             self.advance()
             expr = self.equality()

@@ -8,7 +8,7 @@ class Lexer:
         self.curr = 0
         self.line = 0
         self.tokens = []
-        self.keywords = {"while":Tokentype.WHILE, "for":Tokentype.FOR,"var":Tokentype.VAR}
+        self.keywords = {"while":Tokentype.WHILE, "for":Tokentype.FOR,"var":Tokentype.VAR,"false":Tokentype.FALSE,"true":Tokentype.TRUE}
 
     def scan(self):
         while not self.Isend():
@@ -90,7 +90,7 @@ class Lexer:
                 return
             case _:
                 flag = False
-                start = self.curr
+                start = self.curr-1
                 if self.Isalphanumeric(ch):
                     self.curr = self.curr-1
                     while self.Isalphanumeric(self.peek()):
@@ -100,12 +100,19 @@ class Lexer:
                             flag = False
                         self.advance()
                     if flag == True:
-                        self.tokens.append(Token.addToken(Tokentype.NUMBER,self.source[start-1:self.curr],self.line))
+                        self.tokens.append(Token.addToken(Tokentype.NUMBER,self.source[start:self.curr],self.line))
                         return
                     else:
 
                         if self.keywords.get(self.source[start:self.curr],False):
-                            self.tokens.append(Token.addToken(self.keywords[self.source[start:self.curr]],"keywords",self.line))
+                            if self.keywords.get(self.source[start:self.curr],Tokentype.TRUE) == Tokentype.FALSE:
+                                self.tokens.append(Token.addToken(Tokentype.FALSE,False,self.line))
+                                return
+                            elif self.keywords.get(self.source[start:self.curr],Tokentype.FALSE) == Tokentype.TRUE:
+                                self.tokens.append(Token.addToken(Tokentype.TRUE, True, self.line))
+                                return
+                            self.tokens.append(Token.addToken(self.keywords[self.source[start:self.curr]],"",self.line))
+                            return
                         else:
                             self.tokens.append(Token.addToken(Tokentype.INDENT,"Indent",self.line))
                         return

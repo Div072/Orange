@@ -11,7 +11,7 @@ class Lexer:
         self.keywords = {"while":Tokentype.WHILE, "for":Tokentype.FOR,"var":Tokentype.VAR}
 
     def scan(self):
-        while not self.isend():
+        while not self.Isend():
             self.scan_token()
         self.tokens.append(Token.addToken(Tokentype.EOF, "EOF", self.line))
 
@@ -74,9 +74,9 @@ class Lexer:
             case '"':
                 row = self.line
                 start = self.curr
-                while self.peek()!='"' and  not self.isend():
+                while self.peek()!='"' and  not self.Isend():
                     self.advance()
-                if self.isend():
+                if self.Isend():
                     print('missing " in line', row)
                     exit()
                 self.tokens.append(Token.addToken(Tokentype.STRING,self.source[start:self.curr],self.line))
@@ -85,6 +85,7 @@ class Lexer:
             case _:
                 flag = False
                 if self.Isalphanumeric(ch):
+                    self.curr = self.curr-1
                     while self.Isalphanumeric(self.peek()):
                         if(self.Isnumber(self.peek())):
                             flag = True
@@ -109,7 +110,7 @@ class Lexer:
     def advance(self):
             self.curr = self.curr + 1
 
-    def isend(self):
+    def Isend(self):
         if self.curr<len(self.source):
             return False
         else:
@@ -125,7 +126,7 @@ class Lexer:
         return ch.isdigit() or ch.isalpha()
 
     def peek(self):
-        if not self.isend():
+        if not self.Isend():
             return self.source[self.curr]
         return '\0'
 

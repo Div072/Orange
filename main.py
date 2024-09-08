@@ -1,16 +1,16 @@
 import sys
 from lexer import Lexer
-
+from parser import Parser
 def runFile(file_path):
     with open(file_path,'r') as file:
         source = file.read()
         lexer = Lexer(source)
         lexer.scan()
-        for i in lexer.tokens:
-            print(i.lexeme)
+        parser = Parser(lexer.tokens)
+        parser.parse()
 
 if __name__ == '__main__':
-    debug_mode =  False
+    debug_mode =  True
     if debug_mode == True:
         file_path = "test.ora"
         runFile(file_path)
@@ -20,4 +20,5 @@ if __name__ == '__main__':
             exit()
         file_path = sys.argv[1]
         runFile(file_path)
+
 

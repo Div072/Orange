@@ -1,5 +1,8 @@
-from Expr import*
+from sys import exec_prefix
+from turtledemo.penrose import start
 
+from Expr import*
+from Stmt import*
 from parser import Parser
 from token_ import Tokentype
 
@@ -10,26 +13,32 @@ class Interpreter(Visitor):
 
     def eval(self,expr):
         return expr.accept(self)
+    def visitPrintStmt(self,stmt:Print):
+        expr = self.eval(stmt.expression)
+        print(expr)
+    def visitExpressionStmt(self, stmt:Expression):
+        return self.eval(stmt.expression)
+
     def visitBinnaryExpr(self,expr:Binary):
         left=self.eval(expr.left)
         right = self.eval(expr.right)
         match expr.operator:
             case Tokentype.PLUS:
-                return int( left) + int( right)
+                return left +  right
             case Tokentype.MINUS:
-                return int( left) - int( right)
+                return left - right
             case Tokentype.MULTIPLY:
-                return int( left) * int( right)
+                return left * right
             case Tokentype.DIVIDE:
-                return int( left) / int(right)
+                return left / right
             case Tokentype.LESS:
-                return int(left)<int(right)
+                return left < right
             case Tokentype.GREATER:
-                return int(left)>int(right)
+                return left > right
             case Tokentype.LESS_EQUAL:
-                return int(left)<=int(right)
+                return left<=right
             case Tokentype.GREATER_EQUAL:
-                return int(left)>=int(right)
+                return left>=right
             case _:
                 print("for binary expression got invalid operator")
                 exit()
@@ -51,5 +60,5 @@ class Interpreter(Visitor):
     def interpret(self,statements:[]):
         for statement in statements:
            value =  self.eval(statement)
-           print(value)
+
 

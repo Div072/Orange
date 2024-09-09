@@ -1,6 +1,6 @@
-from lexer import Lexer
 from Expr import *
 from token_ import *
+from Stmt import *
 # I'm using Visitor Pattern to keep this code clean
 class Parser:
     def __init__(self,tokens:[]):
@@ -11,7 +11,34 @@ class Parser:
 
     def parse(self):
         while self.peek().type != Tokentype.EOF and self.curr< len(self.tokens):
-            self.statement.append(self.equality())
+            self.statement.append(self.stmt())
+
+    def stmt(self):
+        if self.peek().type == Tokentype.PRINT:
+            self.advance()
+            if self.peek().type != Tokentype.OPENBRA:
+                print("correct syntax print(expression)")
+                exit()
+            self.advance() #consume (
+            return self.printStatement()
+        return self.expressionStmt()
+    def printStatement(self):
+        expr = self.expression()
+        if self.peek().type != Tokentype.CLOSEBRA:
+            print("correc syntax print(expression)")
+            exit()
+        self.advance() #consume )
+        return Print(expr)
+
+    def expressionStmt(self):
+        expr = self.expression()
+        if self.peek().type != Tokentype.SEMICOLON:
+            print("require ; in the end of epxression statement")
+            exit()
+        self.advance() #consume ;
+        return Expression(expr)
+    def expression(self):
+        return self.equality()
     def equality(self):
         left = self.comparision()
         while self.peek().type == Tokentype.BANG_EQUAL or self.peek().type == Tokentype.EQUAL_EQUAL:
@@ -82,7 +109,6 @@ class Parser:
             return Grouping(expr)
         print("Unexpected token",token.type)
         exit()
-
 
     def peek(self):
         # be aware this peek method is also increasing curr pointer by one

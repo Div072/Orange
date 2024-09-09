@@ -8,7 +8,8 @@ class Lexer:
         self.curr = 0
         self.line = 0
         self.tokens = []
-        self.keywords = {"while":Tokentype.WHILE, "for":Tokentype.FOR,"var":Tokentype.VAR,"false":Tokentype.FALSE,"true":Tokentype.TRUE}
+        self.keywords = {"while":Tokentype.WHILE, "for":Tokentype.FOR,"var":Tokentype.VAR,"false":Tokentype.FALSE,"true":Tokentype.TRUE,
+                         "print":Tokentype.PRINT}
 
     def scan(self):
         while not self.Isend():
@@ -94,13 +95,13 @@ class Lexer:
                 if self.Isalphanumeric(ch):
                     self.curr = self.curr-1
                     while self.Isalphanumeric(self.peek()):
-                        if(self.Isnumber(self.peek())):
+                        if(self.Isnumber(self.peek())): #check for number
                             flag = True
                         else:
                             flag = False
                         self.advance()
-                    if flag == True:
-                        self.tokens.append(Token.addToken(Tokentype.NUMBER,self.source[start:self.curr],self.line))
+                    if flag == True: #it is number
+                        self.tokens.append(Token.addToken(Tokentype.NUMBER,int(self.source[start:self.curr]),self.line))
                         return
                     else:
 

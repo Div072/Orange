@@ -67,15 +67,16 @@ class Parser:
 
     def assignMent(self):
         expr = self.equality()
-        if self.peek() == Tokentype.EQUAL:
+        if self.peek().type == Tokentype.EQUAL:
             self.advance()
             tok = self.peek_previous()
             val = self.assignMent()
-            if type(expr) == type(Expr.Variable):
+            if isinstance(expr,Variable):
                 name = expr.name
-                return Expr.Assign(name,val)
+                return Assign(name,val)
             else:
-                print(tok,"Invalid assignmen targe")
+                print(tok,"Invalid assignment targe")
+                exit()
         return expr
     def equality(self):
         left = self.comparision()

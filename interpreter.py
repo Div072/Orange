@@ -20,7 +20,7 @@ class Interpreter(Visitor):
         value = None
         if stmt.intializer:
             value = self.eval(stmt.intializer)
-        Environment.initiate(self.environment,stmt.name,value)
+        Environment.initiate(self.environment,stmt.name.lexeme,value)
         return
 
     def visitPrintStmt(self,stmt:Print):

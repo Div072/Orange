@@ -4,8 +4,8 @@ from token_ import*
 class Environment:
     def __init__(self):
         self.values = {}
-    def initiate(self,name:Token,value):
-        self.values[name.lexeme] = value
+    def initiate(self,name,value):
+        self.values[name] = value
     def get(self,name):
         #it accepts string
         if self.values.get(name,False):
@@ -15,8 +15,8 @@ class Environment:
             exit()
 
     def assign(self,name:Token,value):
-        if self.values.get(name.lexeme,False):
-            self.values[name.lexeme] = value
+        if self.values.get(name,False):
+            self.values[name] = value
             return
         else:
             print("Undefined variable: ",name.lexeme)

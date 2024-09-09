@@ -2,6 +2,10 @@
 On current phase language interpreter can successfully evaluate arithmetic operations  
 
 ### Our CFG grammar looks like this currently ###
+>program -> statements* EOF  
+> statements -> Print || Expression  
+> Print -> 'print' '(' expression ')'  
+> Expression -> expression ';'
 >expression ->equality  
 >eqality -> comparision(("!=" || "==")comparision)*  
 > comparision -> term((">" || "<" || ">=" || "<=" )term)*  

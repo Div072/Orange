@@ -1,18 +1,22 @@
-from sys import exec_prefix
-from turtledemo.penrose import start
-
 from Expr import*
 from Stmt import*
-from parser import Parser
 from token_ import Tokentype
-
+from Env import Environment
 
 # we are applying visitor pattern for Interpreter also
 
 class Interpreter(Visitor):
-
+    def __init__(self):
+        self.environment = Environment()
     def eval(self,expr):
         return expr.accept(self)
+    def visitVarStmt(self,stmt:Var):
+        value = None
+        if stmt.intializer:
+            value = self.eval(stmt.intializer)
+        Environment.initiate(self.environment,stmt.name.lexeme,value)
+        return
+
     def visitPrintStmt(self,stmt:Print):
         expr = self.eval(stmt.expression)
         print(expr)

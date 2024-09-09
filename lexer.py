@@ -115,7 +115,7 @@ class Lexer:
                             self.tokens.append(Token.addToken(self.keywords[self.source[start:self.curr]],"",self.line))
                             return
                         else:
-                            self.tokens.append(Token.addToken(Tokentype.INDENT,"Indent",self.line))
+                            self.tokens.append(Token.addToken(Tokentype.INDENT,self.source[start:self.curr],self.line))
                         return
                 else:
                     print("invalid character")

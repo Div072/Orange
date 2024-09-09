@@ -14,6 +14,9 @@ class Visitor(ABC):
     @abstractmethod
     def visitGroupingExpr(self,expr:Grouping)->None:
         pass
+    @abstractmethod
+    def visitVariableExpr(self, expr:Variable)->None:
+        pass
 
 class Expr(ABC):
     def accept(self,visitor:Visitor)-> None:
@@ -46,6 +49,10 @@ class Literal(Expr):
     def accept(self,visitor:Visitor):
         return visitor.visitLiteralExpr(self)
 class Variable(Expr):
-    pass
+    def __init__(self,name):
+        self.name = name
+    def accept(self,visitor:Visitor):
+        return visitor.visitVariableExpr(self)
+
 
 

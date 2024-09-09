@@ -7,11 +7,33 @@ class Parser:
         self.tokens = tokens
         self.curr = 0
         self.statement = []
-        #Lexer.tokens = None
 
     def parse(self):
         while self.peek().type != Tokentype.EOF and self.curr< len(self.tokens):
-            self.statement.append(self.stmt())
+            self.statement.append(self.declaration())
+    def declaration(self):
+        if self.peek().type == Tokentype.VAR:
+            self.advance() #consume var
+            return self.varDeclaration()
+        else:
+            return self.stmt()
+    def varDeclaration(self):
+        tok = None
+        if self.peek().type == Tokentype.INDENT:
+            tok = self.peek()
+            self.advance()
+        else:
+            print("Expect variable name")
+            exit()
+        exp = None
+        if self.peek().type == Tokentype.EQUAL:
+            self.advance()
+            exp = self.expression()
+        if self.peek().type != Tokentype.SEMICOLON:
+            print("Expect ; after statement and declaration")
+            exit()
+        self.advance()
+        return Var(tok,exp)
 
     def stmt(self):
         if self.peek().type == Tokentype.PRINT:
@@ -21,11 +43,12 @@ class Parser:
                 exit()
             self.advance() #consume (
             return self.printStatement()
-        return self.expressionStmt()
+        else:
+            return self.expressionStmt()
     def printStatement(self):
         expr = self.expression()
         if self.peek().type != Tokentype.CLOSEBRA:
-            print("correc syntax print(expression)")
+            print("correct syntax print(expression)")
             exit()
         self.advance() #consume )
         return Print(expr)
@@ -99,6 +122,9 @@ class Parser:
         if token.type == Tokentype.TRUE:
             self.advance()
             return Literal(token.lexeme)
+        if token.type == Tokentype.INDENT:
+            self.advance()
+            return Variable(token.lexeme)
         if token.type == Tokentype.OPENBRA:
             self.advance()
             expr = self.equality()
@@ -107,8 +133,7 @@ class Parser:
                 exit()
             self.advance() #consume )
             return Grouping(expr)
-        print("Unexpected token",token.type)
-        exit()
+
 
     def peek(self):
         # be aware this peek method is also increasing curr pointer by one

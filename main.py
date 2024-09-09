@@ -2,6 +2,7 @@ import sys
 from interpreter import Interpreter
 from lexer import Lexer
 from parser import Parser
+
 def runFile(file_path):
     with open(file_path,'r') as file:
         source = file.read()
@@ -11,6 +12,8 @@ def runFile(file_path):
         parser.parse()
         interpreter = Interpreter()
         interpreter.interpret(parser.statement)
+        print("")
+
 
 
 if __name__ == '__main__':

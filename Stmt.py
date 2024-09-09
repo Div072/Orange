@@ -11,6 +11,9 @@ class Visitor(ABC):
     @abstractmethod
     def visitExpressionStmt(self, stmt:Expression)->None:
         pass
+    @abstractmethod
+    def visitVarStmt(self,stmt:Var)->None:
+        pass
 
 class Stmt(ABC):
     def accept(self,visitor:Visitor)->None:
@@ -26,3 +29,10 @@ class Expression(Stmt):
         self.expression = expression
     def accept(self,visitor:Visitor):
         return visitor.visitExpressionStmt(self)
+class Var(Stmt):
+    def __init__(self,name:Token,expr:Expr):
+        self.name = name
+        self.intializer = expr
+
+    def accept(self,visitor:Visitor):
+        return visitor.visitVarStmt(self)

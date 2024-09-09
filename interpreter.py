@@ -10,11 +10,17 @@ class Interpreter(Visitor):
         self.environment = Environment()
     def eval(self,expr):
         return expr.accept(self)
+
+    def visitAssignExpr(self,expr:Assign):
+        value = self.eval(expr.value)
+        Environment.assign(self.environment,expr.name,value)
+        return value
+
     def visitVarStmt(self,stmt:Var):
         value = None
         if stmt.intializer:
             value = self.eval(stmt.intializer)
-        Environment.initiate(self.environment,stmt.name.lexeme,value)
+        Environment.initiate(self.environment,stmt.name,value)
         return
 
     def visitPrintStmt(self,stmt:Print):
@@ -22,6 +28,9 @@ class Interpreter(Visitor):
         print(expr)
     def visitExpressionStmt(self, stmt:Expression):
         return self.eval(stmt.expression)
+
+    def visitVariableExpr(self, expr: Variable):
+        return self.environment.get(expr.name)
 
     def visitBinnaryExpr(self,expr:Binary):
         left=self.eval(expr.left)

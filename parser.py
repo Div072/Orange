@@ -1,3 +1,4 @@
+import Expr
 from Expr import *
 from token_ import *
 from Stmt import *
@@ -60,8 +61,22 @@ class Parser:
             exit()
         self.advance() #consume ;
         return Expression(expr)
+
     def expression(self):
-        return self.equality()
+        return self.assignMent()
+
+    def assignMent(self):
+        expr = self.equality()
+        if self.peek() == Tokentype.EQUAL:
+            self.advance()
+            tok = self.peek_previous()
+            val = self.assignMent()
+            if type(expr) == type(Expr.Variable):
+                name = expr.name
+                return Expr.Assign(name,val)
+            else:
+                print(tok,"Invalid assignmen targe")
+        return expr
     def equality(self):
         left = self.comparision()
         while self.peek().type == Tokentype.BANG_EQUAL or self.peek().type == Tokentype.EQUAL_EQUAL:

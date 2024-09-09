@@ -3,6 +3,9 @@ from abc import ABC, abstractmethod
 from token_ import Token
 class Visitor(ABC):
     @abstractmethod
+    def visitAssignExpr(self,expr:Assign)->None:
+        pass
+    @abstractmethod
     def visitBinnaryExpr(self,expr:Binary)->None:
         pass
     @abstractmethod
@@ -21,6 +24,12 @@ class Visitor(ABC):
 class Expr(ABC):
     def accept(self,visitor:Visitor)-> None:
         pass
+class Assign(Expr):
+    def __init__(self,name:Token,value:Expr):
+        self.name = name
+        self.value = value
+    def accept(self,visitor:Visitor):
+        return visitor.visitAssignExpr(self)
 
 class Binary(Expr):
     def __init__(self,left:Expr,token:Token,right:Expr):

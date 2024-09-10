@@ -110,6 +110,13 @@ class Lexer:
                 self.tokens.append(Token.addToken(Tokentype.STRING,self.source[start:self.curr],self.line))
                 self.advance() #consume "
                 return
+            case '#':
+                while self.peek()!='#' and not self.Isend():
+                    self.advance()
+                if self.Isend():
+                    print("missing # in")
+                    exit()
+                self.advance() #consume #
             case _:
                 flag = False
                 start = self.curr-1

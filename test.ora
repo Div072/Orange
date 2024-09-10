@@ -1,6 +1,7 @@
+# Orange Orange Orange #
 var a = 10;
 {
-    var a = 20;
+    var a = true || false;
     print(a)
 }
 print(a)

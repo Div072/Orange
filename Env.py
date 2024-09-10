@@ -3,7 +3,8 @@ from token_ import*
 class Environment:
     def __init__(self,env= None):
         self.values = {}
-        self.env = env #be careful because you cannot just tell python to create instance of his own type
+        self.env = env #parent env
+        #be careful because you cannot just tell python to create instance of his own type
 
     def initiate(self,name,value):
         self.values[name] = value

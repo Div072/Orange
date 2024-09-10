@@ -91,6 +91,12 @@ class Lexer:
             case '\n':
                 self.line +=1
                 return
+            case '{':
+                self.tokens.append(Token.addToken(Tokentype.OPENPARA,"{",self.line))
+                return
+            case '}':
+                self.tokens.append(Token.addToken(Tokentype.CLOSEPARA,"}",self.line))
+                return
             case ' ':
                 return
             case '"':

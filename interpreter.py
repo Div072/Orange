@@ -28,6 +28,17 @@ class Interpreter(Visitor):
         print(expr)
     def visitExpressionStmt(self, stmt:Expression):
         return self.eval(stmt.expression)
+    def visitBlockStmt(self,stmt:Block):
+        self.executeBlock(stmt.statements, Environment(self.environment))
+        return
+    def executeBlock(self,statements,env):
+        prv = self.environment
+        try:
+            self.environment = env
+            for statement in statements:
+                self.eval(statement)
+        finally:
+            self.environment = prv
 
     def visitVariableExpr(self, expr: Variable):
         return self.environment.get(expr.name)

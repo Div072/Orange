@@ -1,6 +1,6 @@
-from unittest.mock import right
-
-import Expr
+""" statement -> exprStmt | printStmt | block;
+block = "{" declaration "}"
+"""
 from Expr import *
 from token_ import *
 from Stmt import *
@@ -46,6 +46,9 @@ class Parser:
                 exit()
             self.advance() #consume (
             return self.printStatement()
+        elif self.peek().type == Tokentype.OPENPARA:
+            self.advance()
+            return Block(self.block())
         else:
             return self.expressionStmt()
     def printStatement(self):
@@ -63,6 +66,15 @@ class Parser:
             exit()
         self.advance() #consume ;
         return Expression(expr)
+    def block(self):
+        statements = []
+        while self.peek().type!=Tokentype.CLOSEPARA and not self.IsEnd():
+            statements.append(self.declaration())
+        if self.peek().type!=Tokentype.CLOSEPARA:
+            print("expect '}' after block")
+            exit()
+        self.advance() #consume '}'
+        return statements
 
     def expression(self):
         return self.assignMent()

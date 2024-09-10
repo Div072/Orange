@@ -26,6 +26,8 @@ class Tokentype(Enum):
     FUN = auto()
     OPENBRA = auto()
     CLOSEBRA =  auto()
+    OPENPARA = auto()
+    CLOSEPARA = auto()
     TRUE = auto()
     FALSE = auto()
     EOF = auto()

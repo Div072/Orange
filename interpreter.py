@@ -52,6 +52,10 @@ class Interpreter(Visitor):
                 return left<=right
             case Tokentype.GREATER_EQUAL:
                 return left>=right
+            case Tokentype.OR:
+                return left or right
+            case Tokentype.AND:
+                return left and right
             case _:
                 print("for binary expression got invalid operator")
                 exit()

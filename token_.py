@@ -11,6 +11,8 @@ class Tokentype(Enum):
     DIVIDE = auto()
     EQUAL = auto()
     BANG = auto()
+    OR =  auto()
+    AND = auto()
     BANG_EQUAL = auto()
     EQUAL_EQUAL= auto()
     GREATER= auto()

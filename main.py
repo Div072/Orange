@@ -8,11 +8,13 @@ def runFile(file_path):
         source = file.read()
         lexer = Lexer(source)
         lexer.scan()
+        for token in lexer.tokens:
+            print( token.type)
         parser = Parser(lexer.tokens)
         parser.parse()
         interpreter = Interpreter()
         interpreter.interpret(parser.statement)
-
+        print("print for debug")
 
 if __name__ == '__main__':
     debug_mode =  True

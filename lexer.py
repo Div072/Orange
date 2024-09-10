@@ -40,6 +40,9 @@ class Lexer:
             case '*':
                 self.tokens.append(Token.addToken(Tokentype.MULTIPLY,"Multiply",self.line))
                 return
+            case '/':
+                self.tokens.append(Token.addToken(Tokentype.DIVIDE, "DIVISION", self.line))
+                return
             case '>':
                 if self.peek() == '=':
                     self.advance()
@@ -69,10 +72,22 @@ class Lexer:
                     return
                 self.tokens.append(Token.addToken(Tokentype.BANG, "BANG", self.line))
                 return
-
-            case '/':
-                self.tokens.append(Token.addToken(Tokentype.DIVIDE,"DIVISION",self.line))
-                return
+            case '&':
+                if self.peek() =='&':
+                    self.advance() #consume &
+                    self.tokens.append(Token.addToken(Tokentype.AND,"AND",self.line))
+                    return
+                else:
+                    print("logical and syntax is &&: ",self.line)
+                    exit()
+            case '|':
+                if self.peek() == '|':
+                    self.advance() #consume |
+                    self.tokens.append(Token.addToken(Tokentype.OR,"OR",self.line))
+                    return
+                else:
+                    print("logical or syntac is ||: ",self.line)
+                    exit()
             case '\n':
                 self.line +=1
                 return

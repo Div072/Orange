@@ -1,3 +1,5 @@
+from unittest.mock import right
+
 import Expr
 from Expr import *
 from token_ import *
@@ -106,14 +108,24 @@ class Parser:
         return left
 
     def factor(self):
-        left = self.unary()
+        left = self.logical()
         while self.peek().type == Tokentype.MULTIPLY or self.peek().type==Tokentype.DIVIDE:
             self.advance()
             operator = self.peek_previous()
 
+            right = self.logical()
+            left = Binary(left,operator,right)
+        return left
+    def logical(self):
+        # a && b
+        left = self.unary()
+        while self.peek().type == Tokentype.AND or self.peek().type == Tokentype.OR:
+            self.advance()
+            operator = self.peek_previous()
             right = self.unary()
             left = Binary(left,operator,right)
         return left
+
     def unary(self):
         if self.peek().type == Tokentype.BANG or self.peek().type == Tokentype.MINUS:
             self.advance()

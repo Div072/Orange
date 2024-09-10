@@ -1,6 +1,6 @@
 from token_ import Tokentype
 from token_ import Token
-#TODO properly assing tokens
+
 class Lexer:
 
     def __init__(self,source):

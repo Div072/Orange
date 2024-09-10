@@ -53,9 +53,9 @@ class Interpreter(Visitor):
             case Tokentype.GREATER_EQUAL:
                 return left>=right
             case Tokentype.OR:
-                return left or right
+                return self.IsTrue(left) or self.IsTrue(right)
             case Tokentype.AND:
-                return left and right
+                return  self.IsTrue(left) and self.IsTrue(right)
             case _:
                 print("for binary expression got invalid operator")
                 exit()
@@ -79,3 +79,9 @@ class Interpreter(Visitor):
            value =  self.eval(statement)
 
 
+    def IsTrue(self,val):
+        if isinstance(val,bool):
+            return val
+        elif val != None:
+            return True
+        return False

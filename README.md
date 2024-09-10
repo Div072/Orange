@@ -1,9 +1,8 @@
 # Orange
-On current phase language interpreter can successfully evaluate arithmetic operations  
-
-
 
 ### Supported Expression ###
-> Currently Orange language only supports basic arithmetic operations 
-> (-23*2)<=2 => false  
-> print(-23*2)
+Currently, the Orange language supports only basic arithmetic operations, the print function, and variable declaration and assignment.
+>Example:   
+> var a = 10;   
+> a = false || true;  
+> print(a) => True

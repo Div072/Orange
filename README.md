@@ -8,7 +8,7 @@ Currently, the Orange language supports only basic arithmetic operations, the pr
 # Orange Orange Orange #
 var a = 30;
 var b = 20;
-if a<=b {
+if true && a<=b {
     a = a+1;
     print(a)
 }else{

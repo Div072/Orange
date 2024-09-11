@@ -50,7 +50,7 @@ class Parser:
             return self.printStatement()
         elif self.peek().type == Tokentype.IF:
             self.advance() #consume if
-            expr = self.equality()
+            expr = self.logical_or()
             IF_statment = None
             El_statment = None
             if self.peek().type == Tokentype.OPENPARA:
@@ -99,9 +99,14 @@ class Parser:
 
     def expression(self):
         return self.assignMent()
-
+    """ Logical operators are different than usual binary operators 
+    expression->assingment
+    assingment-> IDENTIFIER "=" assingment | logical_or
+    logical_or -> logical_and ("or" logical_and)*;
+    logical_and -> equality ("and" equality)*;
+    """
     def assignMent(self):
-        expr = self.equality()
+        expr = self.logical_or()
         if self.peek().type == Tokentype.EQUAL:
             self.advance()
             tok = self.peek_previous()
@@ -113,6 +118,23 @@ class Parser:
                 print(tok,"Error from parser: Invalid assignment targe")
                 exit()
         return expr
+    def logical_or(self):
+        left = self.logical_and()
+        while self.peek().type == Tokentype.OR:
+            self.advance()
+            operator = self.peek_previous()
+            right = self.logical_and()
+            left = Binary(left,operator,right)
+        return left
+
+    def logical_and(self):
+        left = self.equality()
+        while self.peek().type == Tokentype.AND:
+            self.advance()
+            operator = self.peek_previous()
+            right = self.equality()
+            left = Binary(left,operator,right)
+        return left
     def equality(self):
         left = self.comparision()
         while self.peek().type == Tokentype.BANG_EQUAL or self.peek().type == Tokentype.EQUAL_EQUAL:
@@ -141,20 +163,11 @@ class Parser:
         return left
 
     def factor(self):
-        left = self.logical()
+        left = self.unary()
         while self.peek().type == Tokentype.MULTIPLY or self.peek().type==Tokentype.DIVIDE:
             self.advance()
             operator = self.peek_previous()
 
-            right = self.logical()
-            left = Binary(left,operator,right)
-        return left
-    def logical(self):
-        # a && b
-        left = self.unary()
-        while self.peek().type == Tokentype.AND or self.peek().type == Tokentype.OR:
-            self.advance()
-            operator = self.peek_previous()
             right = self.unary()
             left = Binary(left,operator,right)
         return left
@@ -216,7 +229,3 @@ class Parser:
         else:
             print("pError from parser: peek_previous() acessing index less than 0")
             exit()
-
-
-
-

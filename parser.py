@@ -49,29 +49,15 @@ class Parser:
             self.advance() #consume (
             return self.printStatement()
         elif self.peek().type == Tokentype.IF:
-            self.advance() #consume if
-            expr = self.logical_or()
-            IF_statment = None
-            El_statment = None
-            if self.peek().type == Tokentype.OPENPARA:
-                self.advance()
-                IF_statment = Block(self.block()) #block will take care of }
-                if self.peek().type == Tokentype.ELSE:
-                    self.advance() #consume else
-                    if self.peek().type == Tokentype.OPENPARA:
-                        self.advance() #consume {
-                        El_statment = Block(self.block())
-                return IF_Stmt(IF_statment,expr,El_statment)
-            else:
-                print("Error from parser: missing {: ")
-                exit()
-
-
+            return self.ifStatement()
+        elif self.peek().type == Tokentype.WHILE:
+            return self.whileStatement()
         elif self.peek().type == Tokentype.OPENPARA:
             self.advance()
             return Block(self.block())
         else:
             return self.expressionStmt()
+
     def printStatement(self):
         expr = self.expression()
         if self.peek().type != Tokentype.CLOSEBRA:
@@ -79,7 +65,35 @@ class Parser:
             exit()
         self.advance() #consume )
         return Print(expr)
-
+    def ifStatement(self):
+        self.advance()  # consume if
+        expr = self.expression()
+        IF_statment = None
+        El_statment = None
+        if self.peek().type == Tokentype.OPENPARA:
+            self.advance()
+            IF_statment = Block(self.block())  # block will take care of }
+            if self.peek().type == Tokentype.ELSE:
+                self.advance()  # consume else
+                if self.peek().type == Tokentype.OPENPARA:
+                    self.advance()  # consume {
+                    El_statment = Block(self.block())
+            return IF_Stmt(IF_statment, expr, El_statment)
+        else:
+            print("Error from parser: missing {: ")
+            exit()
+    def whileStatement(self):
+        self.advance() #consume while token
+        expr = self.expression()
+        Wh = None
+        if self.peek().type == Tokentype.OPENPARA:
+            self.advance() #consume {
+            Wh = Block(self.block())
+            return WHile(expr,Wh)
+        else:
+            print("Error from parser: missing {")
+            exit()
+        pass
     def expressionStmt(self):
         expr = self.expression()
         if self.peek().type != Tokentype.SEMICOLON:
@@ -145,7 +159,7 @@ class Parser:
         return left
     def comparision(self):
         left = self.term()
-        while self.peek().type == Tokentype.GREATER_EQUAL or self.peek().type == Tokentype.GREATER_EQUAL or self.peek().type == Tokentype.LESS_EQUAL or self.peek().type == Tokentype.LESS:
+        while self.peek().type == Tokentype.GREATER_EQUAL or self.peek().type == Tokentype.GREATER or self.peek().type == Tokentype.LESS_EQUAL or self.peek().type == Tokentype.LESS:
             self.advance()
             operand = self.peek_previous()
             right = self.term()

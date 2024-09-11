@@ -12,9 +12,9 @@ if true && a<=b {
     a = a+1;
     print(a)
 }else{
-    if a == 30{
-       print(a)
+    while a>=b{
+        print(a)
+        a = a+1;
     }
-   print(b)
 }
 ```

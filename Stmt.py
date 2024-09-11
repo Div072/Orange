@@ -18,7 +18,10 @@ class Visitor(ABC):
     def visitBlockStmt(self,stmt:Block)->None:
         pass
     @abstractmethod
-    def visitIFStmt(self,stmt:IF)->None:
+    def visitIFStmt(self,stmt:IF_Stmt)->None:
+        pass
+    @abstractmethod
+    def visitWhileStmt(self,stmt:WHile)->None:
         pass
 
 class Stmt(ABC):
@@ -48,10 +51,17 @@ class Block(Stmt):
     def accept(self,visitor:Visitor):
         return visitor.visitBlockStmt(self)
 class IF_Stmt(Stmt):
-    def __init__(self,IF,expr:Expr,EL:Block = None,ELIF:Block = None):
+    def __init__(self,IF,expr:Expr,EL:Stmt = None,ELIF:Stmt = None):
         self.IF = IF
         self.expr = expr
         self.EL = EL
         self.ELIF = ELIF
     def accept(self,visitor:Visitor):
         return visitor.visitIFStmt(self)
+class WHile(Stmt):
+    def __init__(self,expr:Expr,WH:Stmt=None):
+        self.expr = expr
+        self.WH = WH
+    def accept(self,visitor:Visitor):
+        return visitor.visitWhileStmt(self)
+

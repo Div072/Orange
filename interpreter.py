@@ -32,8 +32,14 @@ class Interpreter(Visitor):
     def visitIFStmt(self,stmt:IF_Stmt):
         return self.executeIF(stmt.IF,stmt.expr,stmt.EL)
     def visitBlockStmt(self,stmt:Block):
-        self.executeBlock(stmt.statements, Environment(self.environment))
-        return
+        return self.executeBlock(stmt.statements, Environment(self.environment))
+
+    def visitWhileStmt(self,stmt:WHile):
+        while  self.IsTrue(self.eval(stmt.expr)):
+             self.executeWhile(stmt.expr,stmt.WH)
+    def executeWhile(self,expr:Expr,Wh:Block):
+        self.executeBlock(Wh.statements, Environment(self.environment))
+
     def executeIF(self,If_block:Block,expr:Expr,El_blcok:Block = None):
         decision_expr = None
         if expr !=None:
@@ -44,7 +50,6 @@ class Interpreter(Visitor):
             self.executeBlock(If_block.statements,Environment(self.environment))
         elif El_blcok!=None:
             self.executeBlock(El_blcok.statements,Environment(self.environment))
-
     def executeBlock(self,statements,env):
         prv = self.environment
         try:

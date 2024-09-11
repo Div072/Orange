@@ -13,6 +13,7 @@ def runFile(file_path):
         interpreter = Interpreter()
         interpreter.interpret(parser.statement)
 
+
 if __name__ == '__main__':
     debug_mode =  True
     if debug_mode == True:

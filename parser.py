@@ -51,15 +51,22 @@ class Parser:
         elif self.peek().type == Tokentype.IF:
             self.advance() #consume if
             expr = self.equality()
+            IF_statment = None
+            El_statment = None
             if self.peek().type == Tokentype.OPENPARA:
                 self.advance()
-                IF = Block(self.block()) #block will take care of }
-                return IF_Stmt(IF,expr)
+                IF_statment = Block(self.block()) #block will take care of }
+                if self.peek().type == Tokentype.ELSE:
+                    self.advance() #consume else
+                    if self.peek().type == Tokentype.OPENPARA:
+                        self.advance() #consume {
+                        El_statment = Block(self.block())
+                return IF_Stmt(IF_statment,expr,El_statment)
             else:
                 print("Error from parser: missing {: ")
                 exit()
 
-            #TODO: Else part
+
         elif self.peek().type == Tokentype.OPENPARA:
             self.advance()
             return Block(self.block())

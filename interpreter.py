@@ -30,7 +30,7 @@ class Interpreter(Visitor):
     def visitExpressionStmt(self, stmt:Expression):
         return self.eval(stmt.expression)
     def visitIFStmt(self,stmt:IF_Stmt):
-        return self.executeIF(stmt.IF,stmt.expr)
+        return self.executeIF(stmt.IF,stmt.expr,stmt.EL)
     def visitBlockStmt(self,stmt:Block):
         self.executeBlock(stmt.statements, Environment(self.environment))
         return
@@ -42,6 +42,8 @@ class Interpreter(Visitor):
             print("Error from Interpreter: expression of if cannot be none",)
         if self.IsTrue(decision_expr):
             self.executeBlock(If_block.statements,Environment(self.environment))
+        elif El_blcok!=None:
+            self.executeBlock(El_blcok.statements,Environment(self.environment))
 
     def executeBlock(self,statements,env):
         prv = self.environment

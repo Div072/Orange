@@ -22,7 +22,7 @@ class Environment:
         if name in self.values:
             self.values[name] = value
             return
-        if self.env!=None:
+        if self.env != None:
             self.env.assign(name,value)
             return
         print("Undefined variable from assign: ",name)

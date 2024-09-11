@@ -2,7 +2,7 @@
 
 ### Supported Expression ###
 
-Currently, the Orange language supports only basic arithmetic operations, the print function, variable declaration and assignment, and conditional if statements.  
+Currently, the Orange language supports basic arithmetic operations, the print function, variable declaration and assignment, conditional if statements, and a while loop.    
 
 ```
 # Orange Orange Orange #

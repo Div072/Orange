@@ -6,11 +6,15 @@ Currently, the Orange language supports only basic arithmetic operations, the pr
 
 ```
 # Orange Orange Orange #
-var a = 10;
+var a = 30;
 var b = 20;
 if a<=b {
+    a = a+1;
     print(a)
 }else{
-    print(b)
+    if a == 30{
+       print(a)
+    }
+   print(b)
 }
 ```

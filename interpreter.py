@@ -77,12 +77,14 @@ class Interpreter(Visitor):
                 return left<=right
             case Tokentype.GREATER_EQUAL:
                 return left>=right
+            case Tokentype.EQUAL_EQUAL:
+                return left == right
             case Tokentype.OR:
                 return self.IsTrue(left) or self.IsTrue(right)
             case Tokentype.AND:
                 return  self.IsTrue(left) and self.IsTrue(right)
             case _:
-                print("for binary expression got invalid operator")
+                print("for binary expression got invalid operator",expr.operator)
                 exit()
     def visitLiteralExpr(self,expr:Literal):
         return expr.value

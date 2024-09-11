@@ -24,6 +24,7 @@ class Environment:
             return
         if self.env!=None:
             self.env.assign(name,value)
+            return
         print("Undefined variable from assign: ",name)
         exit()
 

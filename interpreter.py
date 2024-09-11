@@ -1,3 +1,4 @@
+
 from Expr import*
 from Stmt import*
 from token_ import Tokentype
@@ -28,9 +29,20 @@ class Interpreter(Visitor):
         print(expr)
     def visitExpressionStmt(self, stmt:Expression):
         return self.eval(stmt.expression)
+    def visitIFStmt(self,stmt:IF_Stmt):
+        return self.executeIF(stmt.IF,stmt.expr)
     def visitBlockStmt(self,stmt:Block):
         self.executeBlock(stmt.statements, Environment(self.environment))
         return
+    def executeIF(self,If_block:Block,expr:Expr,El_blcok:Block = None):
+        decision_expr = None
+        if expr !=None:
+            decision_expr = self.eval(expr)
+        else:
+            print("Error from Interpreter: expression of if cannot be none",)
+        if self.IsTrue(decision_expr):
+            self.executeBlock(If_block.statements,Environment(self.environment))
+
     def executeBlock(self,statements,env):
         prv = self.environment
         try:

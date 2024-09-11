@@ -9,7 +9,7 @@ class Lexer:
         self.line = 0
         self.tokens = []
         self.keywords = {"while":Tokentype.WHILE, "for":Tokentype.FOR,"var":Tokentype.VAR,"false":Tokentype.FALSE,"true":Tokentype.TRUE,
-                         "print":Tokentype.PRINT}
+                         "print":Tokentype.PRINT,"if":Tokentype.IF,"do":Tokentype.DO,"else":Tokentype.ELSE,"elif": Tokentype.ELIF}
 
     def scan(self):
         while not self.Isend():

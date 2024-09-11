@@ -1,6 +1,8 @@
-""" statement -> exprStmt | printStmt | block;
+""" statement -> exprStmt | printStmt | block | IF statement;
 block = "{" declaration "}"
 """
+from time import sleep
+
 from Expr import *
 from token_ import *
 from Stmt import *
@@ -26,14 +28,14 @@ class Parser:
             tok = self.peek()
             self.advance()
         else:
-            print("Expect variable name")
+            print("Error from parser: Expect variable name: ")
             exit()
         exp = None
         if self.peek().type == Tokentype.EQUAL:
             self.advance()
             exp = self.expression()
         if self.peek().type != Tokentype.SEMICOLON:
-            print("Expect ; after statement and declaration")
+            print("Error from parser: Expect ; after statement and declaration")
             exit()
         self.advance()
         return Var(tok,exp)
@@ -42,10 +44,22 @@ class Parser:
         if self.peek().type == Tokentype.PRINT:
             self.advance()
             if self.peek().type != Tokentype.OPENBRA:
-                print("correct syntax print(expression)")
+                print("Error from parser: correct syntax print(expression): ")
                 exit()
             self.advance() #consume (
             return self.printStatement()
+        elif self.peek().type == Tokentype.IF:
+            self.advance() #consume if
+            expr = self.equality()
+            if self.peek().type == Tokentype.OPENPARA:
+                self.advance()
+                IF = Block(self.block()) #block will take care of }
+                return IF_Stmt(IF,expr)
+            else:
+                print("Error from parser: missing {: ")
+                exit()
+
+            #TODO: Else part
         elif self.peek().type == Tokentype.OPENPARA:
             self.advance()
             return Block(self.block())
@@ -54,7 +68,7 @@ class Parser:
     def printStatement(self):
         expr = self.expression()
         if self.peek().type != Tokentype.CLOSEBRA:
-            print("correct syntax print(expression)")
+            print("Error from parser: correct syntax print(expression)")
             exit()
         self.advance() #consume )
         return Print(expr)
@@ -89,7 +103,7 @@ class Parser:
                 name = expr.name
                 return Assign(name,val)
             else:
-                print(tok,"Invalid assignment targe")
+                print(tok,"Error from parser: Invalid assignment targe")
                 exit()
         return expr
     def equality(self):
@@ -169,7 +183,7 @@ class Parser:
             self.advance()
             expr = self.equality()
             if self.peek().type != Tokentype.CLOSEBRA:
-                print("missing close ) token")
+                print("Error from parser: missing close ) token")
                 exit()
             self.advance() #consume )
             return Grouping(expr)
@@ -193,7 +207,7 @@ class Parser:
         if self.curr-1>=0:
             return self.tokens[self.curr-1]
         else:
-            print("peek_previous() acessing index less than 0")
+            print("pError from parser: peek_previous() acessing index less than 0")
             exit()
 
 

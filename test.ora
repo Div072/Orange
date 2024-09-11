@@ -1,7 +1,7 @@
 # Orange Orange Orange #
 var a = 10;
-{
-    var a = true || false;
-    print(a)
+var b = 20;
+if a<=b {
+    print("hello")
 }
-print(a)
+

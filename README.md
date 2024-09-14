@@ -2,7 +2,7 @@
 
 ### Supported Features ###
 >Arithmetic operations  
->Logical operations
+>Logical operations  
 >Variable declaration and Assignment  
 >IF-ELSE statements  
 >While loop  

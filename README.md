@@ -3,7 +3,7 @@
 ### Supported Features ###
 >Arithmetic operations  
 >Logical operations  
->Variable declaration and Assignment  
+>Variable Declaration and Assignment  
 >IF-ELSE statements  
 >While loop  
 >Print  

@@ -9,7 +9,7 @@ class Lexer:
         self.line = 0
         self.tokens = []
         self.keywords = {"while":Tokentype.WHILE, "for":Tokentype.FOR,"var":Tokentype.VAR,"false":Tokentype.FALSE,"true":Tokentype.TRUE,
-                         "print":Tokentype.PRINT,"if":Tokentype.IF,"do":Tokentype.DO,"else":Tokentype.ELSE,"elif": Tokentype.ELIF}
+                         "print":Tokentype.PRINT,"if":Tokentype.IF,"do":Tokentype.DO,"else":Tokentype.ELSE,"elif": Tokentype.ELIF,"fun":Tokentype.FUN}
 
     def scan(self):
         while not self.Isend():
@@ -30,6 +30,9 @@ class Lexer:
                 return
             case ';':
                 self.tokens.append(Token.addToken(Tokentype.SEMICOLON,"Semicolon",self.line))
+                return
+            case ',':
+                self.tokens.append(Token.addToken(Tokentype.COMA,"coma",self.line))
                 return
             case '+':
                 self.tokens.append(Token.addToken(Tokentype.PLUS,"Plus",self.line))
@@ -146,7 +149,7 @@ class Lexer:
                             self.tokens.append(Token.addToken(Tokentype.INDENT,self.source[start:self.curr],self.line))
                         return
                 else:
-                    print("invalid character")
+                    print("Error from Lexer: invalid character")
                     exit()
                 return
 
@@ -163,10 +166,10 @@ class Lexer:
         return ch.isdigit()
 
     def Isalphabet(self, ch):
-        return ch.isalpha()
+        return ch.isalpha() or ch =='_'
 
     def Isalphanumeric(self, ch):
-        return ch.isdigit() or ch.isalpha()
+        return ch.isdigit() or self.Isalphabet(ch)
 
     def peek(self):
         if not self.Isend():
@@ -178,8 +181,3 @@ class Lexer:
             return self.source[self.curr+1]
         else:
             return '\0'
-
-
-
-
-

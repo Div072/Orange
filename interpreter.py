@@ -1,14 +1,17 @@
+from collections.abc import Callable
 
 from Expr import*
 from Stmt import*
 from token_ import Tokentype
 from Env import Environment
+from Callable import Fun_callable
+
 
 # we are applying visitor pattern for Interpreter also
-
 class Interpreter(Visitor):
     def __init__(self):
-        self.environment = Environment()
+        self.global_ = Environment()
+        self.environment = self.global_
     def eval(self,expr):
         return expr.accept(self)
 
@@ -22,6 +25,10 @@ class Interpreter(Visitor):
         if stmt.intializer:
             value = self.eval(stmt.intializer)
         Environment.initiate(self.environment,stmt.name.lexeme,value)
+        return
+    def visitFunDeclarationStmt(self,stmt:FunDec):
+        function_ = Fun_callable(stmt)
+        self.environment.initiate(stmt.name,function_)
         return
 
     def visitPrintStmt(self,stmt:Print):
@@ -103,6 +110,18 @@ class Interpreter(Visitor):
             case _:
                 print("for unary expression got invalid operator")
                 exit()
+    def visitCallExpr(self,expr:Call):
+        callee = self.eval(expr.callee) # return string
+        arguments = []
+        for argument in expr.arguments:
+            arguments.append(self.eval(argument))# append literals
+        callee.call(self,arguments)
+        """
+        fun_dec = self.environment.get_fun(expr.callee.name)
+        if len(fun_dec.arguments) >=1:
+            self.executeBlock(fun_dec.fun_block.statements,Environment(self.environment),fun_dec.arguments)
+        """
+
     def visitGroupingExpr(self,expr:Grouping):
         return self.eval(expr.expression)
 

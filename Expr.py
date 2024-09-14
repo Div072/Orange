@@ -20,6 +20,9 @@ class Visitor(ABC):
     @abstractmethod
     def visitVariableExpr(self, expr:Variable)->None:
         pass
+    @abstractmethod
+    def visitCallExpr(self,expr:Call)->None:
+        pass
 
 class Expr(ABC):
     def accept(self,visitor:Visitor)-> None:
@@ -62,6 +65,17 @@ class Variable(Expr):
         self.name = name
     def accept(self,visitor:Visitor):
         return visitor.visitVariableExpr(self)
+
+class Call(Expr):
+    def __init__(self,callee:Expr,paren:Token,arguments:[]):
+        self.callee = callee
+        self.paren = paren
+        self.arguments = arguments
+    def accept(self,visitor:Visitor):
+        return visitor.visitCallExpr(self)
+
+
+
 
 
 

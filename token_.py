@@ -2,6 +2,7 @@ from enum import Enum, auto
 
 class Tokentype(Enum):
     SEMICOLON = auto()
+    COMA = auto()
     NUMBER = auto()
     PRINT = auto()
     INDENT = auto()
@@ -36,14 +37,11 @@ class Tokentype(Enum):
     FALSE = auto()
     EOF = auto()
 
-
 class Token:
     def __init__(self, tokentype, lexeme, line):
         self.type = tokentype
         self.lexeme = lexeme
         self.line = line
-
-
 
     def addToken(tokentype, lexeme, line):
         return Token(tokentype, lexeme, line)

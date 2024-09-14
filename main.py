@@ -1,5 +1,5 @@
 import sys
-from interpreter import Interpreter
+from interpreter import*
 from lexer import Lexer
 from parser import Parser
 
@@ -12,6 +12,7 @@ def runFile(file_path):
         parser.parse()
         interpreter = Interpreter()
         interpreter.interpret(parser.statement)
+        print("dubug")
 
 
 if __name__ == '__main__':

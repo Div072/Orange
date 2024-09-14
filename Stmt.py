@@ -1,6 +1,5 @@
 from __future__ import annotations
 from Expr import Expr
-
 from abc import ABC, abstractmethod
 from token_ import Token
 
@@ -23,6 +22,10 @@ class Visitor(ABC):
     @abstractmethod
     def visitWhileStmt(self,stmt:WHile)->None:
         pass
+    @abstractmethod
+    def visitFunDeclarationStmt(self,semt:FunDec)->None:
+        pass
+
 
 class Stmt(ABC):
     def accept(self,visitor:Visitor)->None:
@@ -64,4 +67,19 @@ class WHile(Stmt):
         self.WH = WH
     def accept(self,visitor:Visitor):
         return visitor.visitWhileStmt(self)
+class FunDec(Stmt):
+    def __init__(self,name,parameters:[],fun_block:Block):
+        self.name = name #string
+        self.parameters = parameters
+        self.fun_block = fun_block
+    def accept(self,visitor:Visitor):
+        return visitor.visitFunDeclarationStmt(self)
+    """
+    def __init__(self,name,arguments:[],fun_block:Block):
+        self.name = name
+        self.arguments = arguments
+        self.fun_block = fun_block
+    def accept(self,visitor:Visitor):
+        return visitor.visitFunDeclarationStmt(self)
+    """
 

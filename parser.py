@@ -1,8 +1,6 @@
 """ statement -> exprStmt | printStmt | block | IF statement;
 block = "{" declaration "}"
 """
-from time import sleep
-
 from Expr import *
 from token_ import *
 from Stmt import *
@@ -26,38 +24,67 @@ class Parser:
         tok = None
         if self.peek().type == Tokentype.INDENT:
             tok = self.peek()
-            self.advance()
+            self.advance() #consume token Indent
         else:
             print("Error from parser: Expect variable name: ")
             exit()
         exp = None
         if self.peek().type == Tokentype.EQUAL:
-            self.advance()
+            self.advance() #consume token equal
             exp = self.expression()
         if self.peek().type != Tokentype.SEMICOLON:
             print("Error from parser: Expect ; after statement and declaration")
             exit()
-        self.advance()
+        self.advance() #consume token semicolon
         return Var(tok,exp)
 
     def stmt(self):
         if self.peek().type == Tokentype.PRINT:
-            self.advance()
+            self.advance() #consume token print
             if self.peek().type != Tokentype.OPENBRA:
                 print("Error from parser: correct syntax print(expression): ")
                 exit()
             self.advance() #consume (
             return self.printStatement()
+        elif self.peek().type == Tokentype.FUN:
+            self.advance() # consume fun
+            return self.fun_declaration()
         elif self.peek().type == Tokentype.IF:
             return self.ifStatement()
         elif self.peek().type == Tokentype.WHILE:
             return self.whileStatement()
         elif self.peek().type == Tokentype.OPENPARA:
-            self.advance()
+            self.advance() #consume token Openpara
             return Block(self.block())
         else:
             return self.expressionStmt()
-
+    def fun_declaration(self):
+        calleee = self.primary() # will return variable Indent
+        parameters = []
+        if self.peek().type == Tokentype.OPENBRA:
+            self.advance() #consume (
+            if self.peek().type != Tokentype.CLOSEBRA:
+                while True:
+                    parameters.append(self.expression())
+                    if self.peek().type != Tokentype.COMA:
+                        break
+                    else:
+                        self.advance() # consume ,
+            if self.peek().type != Tokentype.CLOSEBRA:
+                print("Error from parser: missing ) in function declaration")
+                exit()
+            else:
+                self.advance() # consume )
+                if self.peek().type == Tokentype.OPENPARA:
+                    self.advance() # consume {
+                    fun_block = Block(self.block())
+                    return FunDec(calleee.name,parameters,fun_block)
+                else:
+                    print("Error from parser: missing { in function declaration")
+                    exit()
+        else:
+            print("Error from parser: missing ( in function declaration")
+            exit()
     def printStatement(self):
         expr = self.expression()
         if self.peek().type != Tokentype.CLOSEBRA:
@@ -195,7 +222,22 @@ class Parser:
             return Unary(operator,right)
 
         else:
-            return self.primary()
+            return self.call_call()
+    """ function calls have higher precedence than any other operator 
+    rule: unary -> (! | -) unary | call               
+    call -> primary (( arguments ?))*
+    arguments -> expression ("," expression)*;
+    """
+    def call_call(self):
+        expr = self.primary() # will return variable type class
+        while True:
+            if self.peek().type == Tokentype.OPENBRA:
+                self.advance() #consume {
+                expr = self.call_helper(expr)
+            else:
+                break
+        return expr
+
     def primary(self):
         token = self.peek()
         if self.peek().type == Tokentype.NUMBER:
@@ -221,8 +263,17 @@ class Parser:
                 exit()
             self.advance() #consume )
             return Grouping(expr)
-
-
+    def call_helper(self, expr:Expr):
+        arguments = []
+        if self.peek().type != Tokentype.CLOSEBRA:
+            while True:
+                arguments.append(self.expression())
+                if self.peek().type == Tokentype.COMA:
+                    self.advance() # consume ,
+                else:
+                    break
+        paren = self.consume(Tokentype.CLOSEBRA,"Error from parser: Mising ) in call_call")
+        return Call(expr,paren,arguments)
     def peek(self):
         # be aware this peek method is also increasing curr pointer by one
         if self.curr<len(self.tokens):
@@ -243,3 +294,10 @@ class Parser:
         else:
             print("pError from parser: peek_previous() acessing index less than 0")
             exit()
+    def consume(self,token_type:Tokentype,message):
+        if self.peek().type != token_type:
+            print(message)
+            exit()
+        else:
+            self.advance()
+            return self.peek_previous()

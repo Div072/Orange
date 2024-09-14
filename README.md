@@ -1,20 +1,29 @@
 # Orange
 
-### Supported Expression ###
+### Supported Features ###
 
-Currently, the Orange language supports only basic arithmetic operations, the print function, variable declaration and assignment, and conditional if statements.  
+>Arithmetic operations  
+>Logical operations
+>Variable declaration and Assignment  
+>IF-ELSE statements  
+>While loop  
+>Print  
+>Function call and Function declaration
 
 ```
 # Orange Orange Orange #
-var a = 30;
+var a = 10;
 var b = 20;
-if true && a<=b {
+fun foobar(a,b){
+    while a<=b{
+        print(a)
+        a = a + 1;
+    }
+}
+if true && a>=b {
     a = a+1;
     print(a)
 }else{
-    while a>=b{
-        print(a)
-        a = a+1;
-    }
+    foobar(a,b);
 }
 ```

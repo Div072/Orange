@@ -12,7 +12,6 @@ def runFile(file_path):
         parser.parse()
         interpreter = Interpreter()
         interpreter.interpret(parser.statement)
-        print("dubug")
 
 
 if __name__ == '__main__':

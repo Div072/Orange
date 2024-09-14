@@ -2,7 +2,6 @@ from token_ import Tokentype
 from token_ import Token
 
 class Lexer:
-
     def __init__(self,source):
         self.source = source
         self.curr = 0

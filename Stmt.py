@@ -26,7 +26,6 @@ class Visitor(ABC):
     def visitFunDeclarationStmt(self,semt:FunDec)->None:
         pass
 
-
 class Stmt(ABC):
     def accept(self,visitor:Visitor)->None:
         pass

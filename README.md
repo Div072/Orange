@@ -1,7 +1,6 @@
 # Orange
 
 ### Supported Features ###
-
 >Arithmetic operations  
 >Logical operations
 >Variable declaration and Assignment  

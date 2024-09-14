@@ -74,12 +74,3 @@ class FunDec(Stmt):
         self.fun_block = fun_block
     def accept(self,visitor:Visitor):
         return visitor.visitFunDeclarationStmt(self)
-    """
-    def __init__(self,name,arguments:[],fun_block:Block):
-        self.name = name
-        self.arguments = arguments
-        self.fun_block = fun_block
-    def accept(self,visitor:Visitor):
-        return visitor.visitFunDeclarationStmt(self)
-    """
-

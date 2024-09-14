@@ -111,16 +111,11 @@ class Interpreter(Visitor):
                 print("for unary expression got invalid operator")
                 exit()
     def visitCallExpr(self,expr:Call):
-        callee = self.eval(expr.callee) # return string
+        callee = self.eval(expr.callee) # return Fun_callable object
         arguments = []
         for argument in expr.arguments:
             arguments.append(self.eval(argument))# append literals
         callee.call(self,arguments)
-        """
-        fun_dec = self.environment.get_fun(expr.callee.name)
-        if len(fun_dec.arguments) >=1:
-            self.executeBlock(fun_dec.fun_block.statements,Environment(self.environment),fun_dec.arguments)
-        """
 
     def visitGroupingExpr(self,expr:Grouping):
         return self.eval(expr.expression)

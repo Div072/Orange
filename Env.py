@@ -1,4 +1,3 @@
-from Stmt import FunDec
 from token_ import*
 class Environment:
     def __init__(self,env= None,fun_env=None):
@@ -26,18 +25,3 @@ class Environment:
             return
         print("Undefined variable from assign: ",name)
         exit()
-    """
-    TODO: find a better way to get_fun then use recur fun 
-    def intialize_fun(self,fun_stmt:FunDec):
-        self.fun_obj[fun_stmt.name.name] = fun_stmt
-        return
-
-    def get_fun(self,name):
-        if name in self.fun_obj:
-            return self.fun_obj[name]
-        if self.env!=None:
-            return self.env.get_fun(name)
-
-        print("Undeclared function:", name)
-        exit() 
-    """

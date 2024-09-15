@@ -1,11 +1,8 @@
-from collections.abc import Callable
-
 from Expr import*
 from Stmt import*
 from token_ import Tokentype
 from Env import Environment
 from Callable import Fun_callable
-
 
 # we are applying visitor pattern for Interpreter also
 class Interpreter(Visitor):

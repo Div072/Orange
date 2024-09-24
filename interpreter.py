@@ -24,7 +24,7 @@ class Interpreter(Visitor):
         Environment.initiate(self.environment,stmt.name.lexeme,value)
         return
     def visitFunDeclarationStmt(self,stmt:FunDec):
-        function_ = Fun_callable(stmt)
+        function_ = Fun_callable(stmt,self.environment)
         self.environment.initiate(stmt.name,function_)
         return
 

@@ -73,3 +73,6 @@ class FunDec(Stmt):
         self.fun_block = fun_block
     def accept(self,visitor:Visitor):
         return visitor.visitFunDeclarationStmt(self)
+    
+
+
